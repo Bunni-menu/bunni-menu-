@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" class="scroll-smooth">
 <head>
@@ -8,8 +9,9 @@
     <meta name="theme-color" content="#FDFBF7" id="theme-color-meta">
     <title>بنّي كافيه | Bunni Menu</title>
     
-    <!-- تم تصحيح مسار صورة اللوجو هنا -->
-    <link rel="preload" href="./images/splash-logo.png" as="image">
+    <!-- التحميل المسبق لصورة الشاشة الافتتاحية لضمان الأداء -->
+    <link rel="preload" href="images/hero.webp" as="image">
+    <link rel="stylesheet" href="splash.css">
     
     <!-- خطوط عربية فاخرة -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -127,72 +129,9 @@
         }
         .marquee-container { overflow: hidden; white-space: nowrap; }
         .marquee-content { display: inline-block; animation: marquee 25s linear infinite; }
-
-        /* === PREMIUM SPLASH SCREEN CSS === */
-        #premium-splash {
-            position: fixed;
-            inset: 0;
-            z-index: 999999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background-color: #FDFBF7;
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 1;
-        }
-        html.dark #premium-splash {
-            background-color: #121212;
-        }
-
-        .splash-logo-img {
-            width: 140px;
-            height: 140px;
-            object-fit: cover;
-            border-radius: 30px;
-            box-shadow: 0 20px 40px -10px rgba(44, 30, 22, 0.2);
-            opacity: 0;
-            transform: scale(0.85);
-            animation: logo-elegant-fade 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            will-change: transform, opacity;
-        }
-        html.dark .splash-logo-img {
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8);
-        }
-
-        .splash-brand-text {
-            margin-top: 24px;
-            font-family: 'Cairo', sans-serif;
-            font-size: 2.4rem;
-            font-weight: 900;
-            color: #2C1E16;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: text-elegant-fade 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
-            will-change: transform, opacity;
-            letter-spacing: -0.02em;
-        }
-        html.dark .splash-brand-text {
-            color: #D4A373;
-        }
-
-        @keyframes logo-elegant-fade {
-            0% { opacity: 0; transform: scale(0.85) translateY(10px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        @keyframes text-elegant-fade {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        body.splash-locked {
-            overflow: hidden !important;
-            height: 100vh !important;
-        }
     </style>
 </head>
-<body class="antialiased pb-28">
+<body class="antialiased pb-28 overflow-hidden">
 
     <script>
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -204,16 +143,14 @@
     </script>
 
     <!-- === PREMIUM SPLASH SCREEN === -->
-    <div id="premium-splash">
-        <!-- تم تصحيح مسار اللوجو -->
-        <img src="./images/splash-logo.png" onerror="this.src='https://i.postimg.cc/vDZ1S2X8/logo.jpg'" alt="Bunni Logo" class="splash-logo-img" draggable="false">
-        <h1 class="splash-brand-text">بُنّي كافيه</h1>
+    <div id="splash-screen" role="presentation" aria-hidden="false">
+        <div class="splash-logo"></div>
     </div>
 
     <!-- === APP CONTENT WRAPPER === -->
-    <div id="app-content" class="opacity-0 translate-y-8 transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none">
+    <div id="app-content" class="opacity-0 translate-y-8 pointer-events-none transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]">
 
-        <!-- قاعدة البيانات مع المسارات المصححة بدقة تامة -->
+        <!-- قاعدة البيانات -->
         <script>
             const menuData = [
                 {
@@ -427,8 +364,7 @@
             <div class="relative z-10 w-full max-w-2xl mx-auto px-6 text-center">
                 
                 <div class="w-28 h-28 mx-auto mb-4 bg-transparent rounded-full flex items-center justify-center shadow-lg border-0 outline-none ring-0 overflow-hidden select-none pointer-events-none">
-                    <!-- تم تصحيح مسار اللوجو -->
-                    <img src="./images/splash-logo.png" onerror="this.src='https://i.postimg.cc/vDZ1S2X8/logo.jpg'" alt="" class="w-full h-full object-cover transform scale-[1.60] select-none pointer-events-none" draggable="false">
+                    <img src="images/hero.webp" onerror="this.src='https://i.postimg.cc/vDZ1S2X8/logo.jpg'" alt="" class="w-full h-full object-cover transform scale-[1.60] select-none pointer-events-none" draggable="false">
                 </div>
                 
                 <h1 class="font-display text-[2.2rem] leading-tight font-black text-bunni-espresso dark:text-white mb-2 tracking-normal">بُنّي كافيه</h1>
@@ -627,45 +563,11 @@
 
     </div>
 
+    <!-- سكربت الشاشة الافتتاحية -->
+    <script src="splash.js"></script>
+
     <!-- === JAVASCRIPT LOGIC === -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const splashScreen = document.getElementById('premium-splash');
-            const appContent = document.getElementById('app-content');
-            
-            if (sessionStorage.getItem('bunni_splash_played')) {
-                if (splashScreen) splashScreen.remove();
-                if (appContent) {
-                    appContent.classList.remove('opacity-0', 'translate-y-8');
-                    appContent.classList.remove('pointer-events-none');
-                }
-                document.body.classList.remove('splash-locked');
-            } else {
-                document.body.classList.add('splash-locked');
-
-                setTimeout(() => {
-                    if (splashScreen) {
-                        splashScreen.style.opacity = '0';
-                        splashScreen.style.transform = 'translateY(-10px)';
-                    }
-                    
-                    setTimeout(() => {
-                        if (appContent) {
-                            appContent.classList.remove('opacity-0', 'translate-y-8');
-                            appContent.classList.remove('pointer-events-none');
-                        }
-                    }, 300);
-
-                    setTimeout(() => {
-                        if (splashScreen) splashScreen.remove();
-                        document.body.classList.remove('splash-locked');
-                        sessionStorage.setItem('bunni_splash_played', 'true');
-                    }, 800);
-
-                }, 2800);
-            }
-        });
-
         function toggleTheme() {
             const htmlTag = document.documentElement;
             const icon = document.getElementById('themeIcon');
@@ -960,5 +862,7 @@
 </body>
 </html>
 
+
 ```
+
 
