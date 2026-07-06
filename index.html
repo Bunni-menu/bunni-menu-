@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" class="scroll-smooth">
 <head>
@@ -129,9 +130,10 @@
         .marquee-container { overflow: hidden; white-space: nowrap; }
         .marquee-content { display: inline-block; animation: marquee 25s linear infinite; }
 
+        /* تم حل مشكلة التجميد في iOS هنا بإزالة height 100vh واستخدام touch-action */
         body.splash-locked {
             overflow: hidden !important;
-            height: 100vh !important;
+            touch-action: none;
         }
 
         /* === SPLASH SCREEN CSS === */
@@ -184,12 +186,11 @@
             will-change: transform, filter;
         }
 
-        /* تم حل مشكلة المربع الشفاف: استخدمنا drop-shadow بدلاً من box-shadow */
         .splash-logo-img {
             width: 140px;
             height: 140px;
             object-fit: contain;
-            filter: drop-shadow(0 15px 25px rgba(44, 30, 22, 0.4)); /* ظل يعانق اللوغو المفرغ بدلاً من مربع */
+            filter: drop-shadow(0 15px 25px rgba(44, 30, 22, 0.4)); 
             opacity: 0;
             transform: scale(0.85);
             animation: luxury-fade-up 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
@@ -289,7 +290,7 @@
         </div>
 
         <div class="splash-content-wrapper">
-            <!-- الكود الأصلي والمحمي للوغو شاشة البداية (تم إزالة المربع الشفاف) -->
+            <!-- الكود الأصلي والمحمي للوغو شاشة البداية -->
             <img src="./images/splash-logo-final.png" onerror="this.src='https://i.postimg.cc/vDZ1S2X8/logo.jpg'" alt="Bunni Logo" class="splash-logo-img select-none pointer-events-none" draggable="false" oncontextmenu="return false;">
             
             <h1 class="splash-title" dir="ltr">Bunni Cat & Coffee</h1>
@@ -302,7 +303,7 @@
     </div>
 
     <!-- === APP CONTENT WRAPPER === -->
-    <div id="app-content" class="opacity-0 translate-y-10 transition-all duration-[1500ms] ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none">
+    <div id="app-content" class="opacity-0 translate-y-10 pointer-events-none transition-all duration-[1500ms] ease-[cubic-bezier(0.16,1,0.3,1)]">
 
         <!-- قاعدة البيانات -->
         <script>
@@ -513,13 +514,13 @@
             <i id="themeIcon" class="fa-solid fa-moon text-xl text-bunni-espresso dark:text-bunni-gold"></i>
         </button>
 
-        <!-- الترويسة الفاخرة -->
+        <!-- الترويسة الفاخرة (تم حل مشكلة الإطار الأبيض هنا) -->
         <header class="relative bg-bunni-surface dark:bg-bunni-darkSurface pt-10 pb-8 rounded-b-[40px] shadow-sm transition-colors">
             <div class="relative z-10 w-full max-w-2xl mx-auto px-6 text-center">
                 
-                <!-- الكود المأخوذ حرفياً من ملفك القديم الناجح مضاف له الحماية الكاملة -->
-                <div class="w-28 h-28 mx-auto mb-4 bg-transparent rounded-full flex items-center justify-center shadow-lg border-0 outline-none ring-0 overflow-hidden select-none pointer-events-none">
-                    <img src="./images/splash-logo-final.png" onerror="this.src='https://i.postimg.cc/vDZ1S2X8/logo.jpg'" alt="" class="w-full h-full object-cover transform scale-[1.60] select-none pointer-events-none" draggable="false" oncontextmenu="return false;">
+                <!-- الحاوية النظيفة للوغو بدون إطارات بيضاء وبدون قص -->
+                <div class="w-32 h-32 mx-auto mb-2 flex items-center justify-center select-none pointer-events-none">
+                    <img src="./images/splash-logo-final.png" onerror="this.src='https://i.postimg.cc/vDZ1S2X8/logo.jpg'" alt="Bunni Logo" class="w-full h-full object-contain drop-shadow-lg transform scale-[1.20] select-none pointer-events-none" draggable="false" oncontextmenu="return false;">
                 </div>
                 
                 <h1 class="font-display text-4xl leading-tight font-bold text-bunni-espresso dark:text-white mb-2 drop-shadow-sm">بُنّي كافيه</h1>
@@ -723,28 +724,31 @@
             const splashScreen = document.getElementById('premium-splash');
             const appContent = document.getElementById('app-content');
             
-            if (sessionStorage.getItem('bunni_splash_played')) {
-                if (splashScreen) splashScreen.remove();
+            // دالة قوية جداً لفك التجميد عن المتصفح والموقع فوراً
+            const unlockPage = () => {
+                document.body.classList.remove('splash-locked');
+                document.body.style.overflow = ''; // مسح أي خصائص تمنع التمرير
                 if (appContent) {
                     appContent.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
                 }
-                document.body.classList.remove('splash-locked');
+            };
+
+            if (sessionStorage.getItem('bunni_splash_played')) {
+                if (splashScreen) splashScreen.remove();
+                unlockPage();
             } else {
                 let isExiting = false;
 
                 const executeExitAnimation = () => {
-                    if (isExiting || !splashScreen) return;
+                    if (isExiting) return;
                     isExiting = true;
 
-                    splashScreen.classList.add('splash-exit');
+                    if (splashScreen) splashScreen.classList.add('splash-exit');
                     
-                    if (appContent) {
-                        appContent.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
-                    }
+                    unlockPage(); // فك التجميد يتم فوراً بدون تأخير لكي يتمكن الزائر من التمرير
 
                     setTimeout(() => {
-                        splashScreen.remove();
-                        document.body.classList.remove('splash-locked');
+                        if (splashScreen) splashScreen.remove();
                         sessionStorage.setItem('bunni_splash_played', 'true');
                     }, 1500);
                 };
@@ -784,9 +788,10 @@
                         executeExitAnimation();
                     });
 
+                // تقليل وقت الحماية الأقصى إلى 4 ثوانٍ فقط لمنع تجميد الشاشة أبداً
                 setTimeout(() => {
                     executeExitAnimation();
-                }, 8000);
+                }, 4000);
             }
             
             // إضافة حماية لجميع صور المشروبات لمنع حفظها وسرقتها
@@ -1107,4 +1112,5 @@
 
 
 ```
+
 
