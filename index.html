@@ -184,13 +184,12 @@
             will-change: transform, filter;
         }
 
-        /* الكود الدقيق المأخوذ من الملف القديم لتفاصيل لوغو شاشة البداية */
+        /* تم حل مشكلة المربع الشفاف: استخدمنا drop-shadow بدلاً من box-shadow */
         .splash-logo-img {
             width: 140px;
             height: 140px;
-            object-fit: cover;
-            border-radius: 30px;
-            box-shadow: 0 20px 40px -10px rgba(44, 30, 22, 0.2);
+            object-fit: contain;
+            filter: drop-shadow(0 15px 25px rgba(44, 30, 22, 0.4)); /* ظل يعانق اللوغو المفرغ بدلاً من مربع */
             opacity: 0;
             transform: scale(0.85);
             animation: luxury-fade-up 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
@@ -198,7 +197,7 @@
             margin-bottom: 24px;
         }
         html.dark .splash-logo-img {
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8);
+            filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.8));
         }
 
         .splash-title {
@@ -290,7 +289,7 @@
         </div>
 
         <div class="splash-content-wrapper">
-            <!-- الكود الأصلي والمحمي للوغو شاشة البداية -->
+            <!-- الكود الأصلي والمحمي للوغو شاشة البداية (تم إزالة المربع الشفاف) -->
             <img src="./images/splash-logo-final.png" onerror="this.src='https://i.postimg.cc/vDZ1S2X8/logo.jpg'" alt="Bunni Logo" class="splash-logo-img select-none pointer-events-none" draggable="false" oncontextmenu="return false;">
             
             <h1 class="splash-title" dir="ltr">Bunni Cat & Coffee</h1>
@@ -518,7 +517,7 @@
         <header class="relative bg-bunni-surface dark:bg-bunni-darkSurface pt-10 pb-8 rounded-b-[40px] shadow-sm transition-colors">
             <div class="relative z-10 w-full max-w-2xl mx-auto px-6 text-center">
                 
-                <!-- الكود المأخوذ حرفياً من ملفك القديم الناجح (حاوية اللوغو في الترويسة) مضاف له الحماية الكاملة -->
+                <!-- الكود المأخوذ حرفياً من ملفك القديم الناجح مضاف له الحماية الكاملة -->
                 <div class="w-28 h-28 mx-auto mb-4 bg-transparent rounded-full flex items-center justify-center shadow-lg border-0 outline-none ring-0 overflow-hidden select-none pointer-events-none">
                     <img src="./images/splash-logo-final.png" onerror="this.src='https://i.postimg.cc/vDZ1S2X8/logo.jpg'" alt="" class="w-full h-full object-cover transform scale-[1.60] select-none pointer-events-none" draggable="false" oncontextmenu="return false;">
                 </div>
@@ -789,6 +788,14 @@
                     executeExitAnimation();
                 }, 8000);
             }
+            
+            // إضافة حماية لجميع صور المشروبات لمنع حفظها وسرقتها
+            const allImages = document.querySelectorAll('img');
+            allImages.forEach(img => {
+                img.addEventListener('contextmenu', e => e.preventDefault());
+                img.setAttribute('draggable', 'false');
+                img.classList.add('anti-save-img');
+            });
         });
 
         function toggleTheme() {
@@ -1027,6 +1034,12 @@
                 renderMenu(menuData);
                 if(bestsellersSection) bestsellersSection.style.display = 'block';
                 if(studyRoomSection) studyRoomSection.style.display = 'block';
+                // تفعيل الحماية لصور نتائج البحث
+                setTimeout(() => {
+                    document.querySelectorAll('img.anti-save-img').forEach(img => {
+                        img.addEventListener('contextmenu', e => e.preventDefault());
+                    });
+                }, 100);
                 return;
             }
             
@@ -1042,6 +1055,13 @@
             }).filter(cat => cat !== null);
 
             renderMenu(filteredData);
+            
+            // تفعيل الحماية لصور نتائج البحث
+            setTimeout(() => {
+                document.querySelectorAll('img.anti-save-img').forEach(img => {
+                    img.addEventListener('contextmenu', e => e.preventDefault());
+                });
+            }, 100);
         }
 
         function setupScrollSpy() {
@@ -1087,3 +1107,4 @@
 
 
 ```
+
