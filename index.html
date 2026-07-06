@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" class="scroll-smooth">
 <head>
@@ -9,12 +8,12 @@
     <meta name="theme-color" content="#FDFBF7" id="theme-color-meta">
     <title>بنّي كافيه | Bunni Menu</title>
     
-    <!-- Preloading Assets for Premium Splash Screen -->
+    <!-- Preloading Assets -->
     <link rel="preload" href="./images/hero.webp" as="image">
-    <!-- مسار الصورة الجديد الشفاف -->
+    <!-- مسار الصورة الجديد -->
     <link rel="preload" href="./images/splash-logo-final.png" as="image">
     
-    <!-- خطوط عربية فاخرة (خط "المسيري" الفاخر) -->
+    <!-- خطوط عربية فاخرة -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -185,47 +184,21 @@
             will-change: transform, filter;
         }
 
-        /* تصميم نظيف للوغو الشفاف */
-        .splash-logo-container {
-            position: relative;
-            width: 150px; 
-            height: 150px;
-            margin-bottom: 30px;
-            z-index: 2;
-        }
-
-        .splash-brand-logo {
-            width: 100%;
-            height: 100%;
-            object-fit: contain; /* نستخدم contain للحفاظ على شكل الصورة الشفافة بالكامل */
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4)); /* ظل أنيق يعانق اللوغو المفرغ */
-            
+        /* الكود الدقيق المأخوذ من الملف القديم لتفاصيل لوغو شاشة البداية */
+        .splash-logo-img {
+            width: 140px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px -10px rgba(44, 30, 22, 0.2);
             opacity: 0;
-            transform: scale(0.85) translateY(25px);
+            transform: scale(0.85);
             animation: luxury-fade-up 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
             will-change: transform, opacity;
+            margin-bottom: 24px;
         }
-
-        /* فئة الحماية القصوى لمنع الحفظ للموبايل والمتصفح */
-        .anti-save-img {
-            -webkit-touch-callout: none !important; /* iOS Safari */
-            -webkit-user-select: none !important; /* Safari */
-            -khtml-user-select: none !important; /* Konqueror HTML */
-            -moz-user-select: none !important; /* Firefox */
-            -ms-user-select: none !important; /* Internet Explorer/Edge */
-            user-select: none !important;
-            -webkit-user-drag: none !important;
-            pointer-events: none !important; /* يمنع اللمس نهائياً */
-        }
-
-        .splash-glow {
-            position: absolute;
-            inset: 15%;
-            border-radius: 50%;
-            box-shadow: 0 0 80px 40px rgba(212, 163, 115, 0.2);
-            opacity: 0;
-            animation: luxury-glow-pulse 3.5s ease-in-out 1.5s infinite alternate;
-            z-index: 1;
+        html.dark .splash-logo-img {
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8);
         }
 
         .splash-title {
@@ -287,11 +260,10 @@
         @keyframes premium-bg-pan { 0% { transform: scale(1.15); } 100% { transform: scale(1.02); } }
         @keyframes luxury-fade-up { 0% { opacity: 0; transform: scale(0.85) translateY(25px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
         @keyframes luxury-fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
-        @keyframes luxury-glow-pulse { 0% { opacity: 0.3; transform: scale(1); } 100% { opacity: 0.7; transform: scale(1.04); } }
         @keyframes luxury-loading-slide { 0% { transform: translateX(-150%); } 100% { transform: translateX(350%); } }
 
         @media (prefers-reduced-motion: reduce) {
-            .splash-bg-img, .splash-title, .splash-subtitle, .splash-glow { animation: none !important; opacity: 1 !important; transform: none !important; }
+            .splash-bg-img, .splash-title, .splash-subtitle, .splash-logo-img { animation: none !important; opacity: 1 !important; transform: none !important; }
             .splash-progress-bar { animation: none !important; width: 100%; }
             #premium-splash.splash-exit .splash-content-wrapper, #premium-splash.splash-exit .splash-bg-img { transform: none !important; filter: none !important; }
             #premium-splash { transition: opacity 0.8s ease, visibility 0.8s ease; }
@@ -311,18 +283,15 @@
 
     <!-- === SPLASH SCREEN === -->
     <div id="premium-splash">
-        <div class="splash-bg-wrapper">
-            <!-- حماية صورة الخلفية -->
-            <img src="./images/hero.webp" alt="Background" class="splash-bg-img anti-save-img" draggable="false" oncontextmenu="return false;">
+        <div class="splash-bg-wrapper pointer-events-none select-none">
+            <!-- منع اللمس والتحديد بشكل قطعي -->
+            <img src="./images/hero.webp" alt="Background" class="splash-bg-img pointer-events-none select-none" draggable="false" oncontextmenu="return false;">
             <div class="splash-overlay"></div>
         </div>
 
         <div class="splash-content-wrapper">
-            <div class="splash-logo-container">
-                <!-- تم إضافة مسار الصورة الشفافة الجديدة + حماية شاملة لمنع الحفظ -->
-                <img src="./images/splash-logo-final.png" onerror="this.src='https://i.postimg.cc/vDZ1S2X8/logo.jpg'" alt="Bunni Logo" class="splash-brand-logo anti-save-img" draggable="false" oncontextmenu="return false;">
-            </div>
-            <div class="splash-glow"></div>
+            <!-- الكود الأصلي والمحمي للوغو شاشة البداية -->
+            <img src="./images/splash-logo-final.png" onerror="this.src='https://i.postimg.cc/vDZ1S2X8/logo.jpg'" alt="Bunni Logo" class="splash-logo-img select-none pointer-events-none" draggable="false" oncontextmenu="return false;">
             
             <h1 class="splash-title" dir="ltr">Bunni Cat & Coffee</h1>
             <p class="splash-subtitle" dir="ltr">First Cat Café in Babylon</p>
@@ -549,10 +518,9 @@
         <header class="relative bg-bunni-surface dark:bg-bunni-darkSurface pt-10 pb-8 rounded-b-[40px] shadow-sm transition-colors">
             <div class="relative z-10 w-full max-w-2xl mx-auto px-6 text-center">
                 
-                <!-- حاوية لوغو الترويسة مع الحماية وتجهيزها للصورة الشفافة -->
-                <div class="w-36 h-36 mx-auto mb-6 relative z-10">
-                    <!-- الصورة هنا محمية بالكامل من الحفظ -->
-                    <img src="./images/splash-logo-final.png" onerror="this.src='https://i.postimg.cc/vDZ1S2X8/logo.jpg'" alt="Bunni Logo" class="w-full h-full object-contain anti-save-img drop-shadow-md" draggable="false" oncontextmenu="return false;">
+                <!-- الكود المأخوذ حرفياً من ملفك القديم الناجح (حاوية اللوغو في الترويسة) مضاف له الحماية الكاملة -->
+                <div class="w-28 h-28 mx-auto mb-4 bg-transparent rounded-full flex items-center justify-center shadow-lg border-0 outline-none ring-0 overflow-hidden select-none pointer-events-none">
+                    <img src="./images/splash-logo-final.png" onerror="this.src='https://i.postimg.cc/vDZ1S2X8/logo.jpg'" alt="" class="w-full h-full object-cover transform scale-[1.60] select-none pointer-events-none" draggable="false" oncontextmenu="return false;">
                 </div>
                 
                 <h1 class="font-display text-4xl leading-tight font-bold text-bunni-espresso dark:text-white mb-2 drop-shadow-sm">بُنّي كافيه</h1>
@@ -792,7 +760,6 @@
                     }
                 });
                 
-                // تحديث اسم الصورة هنا أيضاً
                 const logoImg = new Image();
                 logoImg.src = './images/splash-logo-final.png';
                 const logoLoadPromise = new Promise((resolve) => {
@@ -822,14 +789,6 @@
                     executeExitAnimation();
                 }, 8000);
             }
-            
-            // إضافة حماية لجميع صور المشروبات لمنع حفظها وسرقتها
-            const allImages = document.querySelectorAll('img');
-            allImages.forEach(img => {
-                img.addEventListener('contextmenu', e => e.preventDefault());
-                img.setAttribute('draggable', 'false');
-                img.classList.add('anti-save-img');
-            });
         });
 
         function toggleTheme() {
@@ -876,7 +835,8 @@
                                     <i class="fa-solid fa-star text-[8px] ml-1"></i> ننصح به
                                 </div>
                                 <div class="h-32 w-full rounded-2xl overflow-hidden mb-3 bg-bunni-surface dark:bg-bunni-darkSurface pointer-events-none select-none">
-                                    <img src="${itemImg}" alt="" loading="lazy" class="w-full h-full object-cover anti-save-img" draggable="false" onerror="this.src='https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=600&q=80'">
+                                    <!-- حماية الصورة من الحفظ بـ pointer-events-none -->
+                                    <img src="${itemImg}" alt="" loading="lazy" class="w-full h-full object-cover select-none pointer-events-none" draggable="false" oncontextmenu="return false;" onerror="this.src='https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=600&q=80'">
                                 </div>
                                 <h3 class="font-display font-bold text-bunni-espresso dark:text-white text-base line-clamp-1">${item.name}</h3>
                                 <div class="flex items-center justify-between mt-2">
@@ -1000,7 +960,8 @@
                             </div>
                             
                             <div class="w-24 h-24 shrink-0 rounded-[16px] overflow-hidden bg-bunni-surface dark:bg-bunni-darkSurface relative shadow-inner pointer-events-none select-none">
-                                <img src="${itemImg}" alt="" loading="lazy" class="w-full h-full object-cover anti-save-img" draggable="false" onerror="this.src='https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=600&q=80'">
+                                <!-- حماية الصورة من الحفظ بـ pointer-events-none -->
+                                <img src="${itemImg}" alt="" loading="lazy" class="w-full h-full object-cover select-none pointer-events-none" draggable="false" oncontextmenu="return false;" onerror="this.src='https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=600&q=80'">
                                 <div class="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent"></div>
                             </div>
                         </div>
@@ -1066,12 +1027,6 @@
                 renderMenu(menuData);
                 if(bestsellersSection) bestsellersSection.style.display = 'block';
                 if(studyRoomSection) studyRoomSection.style.display = 'block';
-                // تفعيل الحماية لصور نتائج البحث
-                setTimeout(() => {
-                    document.querySelectorAll('img.anti-save-img').forEach(img => {
-                        img.addEventListener('contextmenu', e => e.preventDefault());
-                    });
-                }, 100);
                 return;
             }
             
@@ -1087,13 +1042,6 @@
             }).filter(cat => cat !== null);
 
             renderMenu(filteredData);
-            
-            // تفعيل الحماية لصور نتائج البحث
-            setTimeout(() => {
-                document.querySelectorAll('img.anti-save-img').forEach(img => {
-                    img.addEventListener('contextmenu', e => e.preventDefault());
-                });
-            }, 100);
         }
 
         function setupScrollSpy() {
@@ -1139,7 +1087,3 @@
 
 
 ```
-
-
-
-
