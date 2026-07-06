@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" class="scroll-smooth">
 <head>
@@ -10,7 +11,8 @@
     
     <!-- Preloading Assets for Premium Splash Screen -->
     <link rel="preload" href="./images/hero.webp" as="image">
-    <link rel="preload" href="./images/splash-logo6.WEBP" as="image">
+    <!-- مسار الصورة الجديد الشفاف -->
+    <link rel="preload" href="./images/splash-logo-final.png" as="image">
     
     <!-- خطوط عربية فاخرة (خط "المسيري" الفاخر) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -88,7 +90,6 @@
             border-bottom: 1px solid #333333;
         }
 
-        /* تنسيق أزرار الأقسام الفاخرة وتفاعلها */
         .nav-pill {
             transition: all 0.3s ease;
             white-space: nowrap;
@@ -134,7 +135,7 @@
             height: 100vh !important;
         }
 
-        /* === 50-YEAR EXPERT LUXURY SPLASH SCREEN CSS === */
+        /* === SPLASH SCREEN CSS === */
         #premium-splash {
             position: fixed;
             inset: 0;
@@ -184,35 +185,44 @@
             will-change: transform, filter;
         }
 
+        /* تصميم نظيف للوغو الشفاف */
         .splash-logo-container {
             position: relative;
             width: 150px; 
             height: 150px;
-            margin-bottom: 30px; 
-            border-radius: 50%; /* ضمان دائرة تامة هنا أيضاً */
+            margin-bottom: 30px;
+            z-index: 2;
         }
 
         .splash-brand-logo {
             width: 100%;
             height: 100%;
-            object-fit: cover; 
-            border-radius: 50%; 
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6); 
-            background-color: transparent; /* إزالة الخلفية التي سببت المشكلة */
+            object-fit: contain; /* نستخدم contain للحفاظ على شكل الصورة الشفافة بالكامل */
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4)); /* ظل أنيق يعانق اللوغو المفرغ */
             
             opacity: 0;
             transform: scale(0.85) translateY(25px);
             animation: luxury-fade-up 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
             will-change: transform, opacity;
-            position: relative;
-            z-index: 2;
+        }
+
+        /* فئة الحماية القصوى لمنع الحفظ للموبايل والمتصفح */
+        .anti-save-img {
+            -webkit-touch-callout: none !important; /* iOS Safari */
+            -webkit-user-select: none !important; /* Safari */
+            -khtml-user-select: none !important; /* Konqueror HTML */
+            -moz-user-select: none !important; /* Firefox */
+            -ms-user-select: none !important; /* Internet Explorer/Edge */
+            user-select: none !important;
+            -webkit-user-drag: none !important;
+            pointer-events: none !important; /* يمنع اللمس نهائياً */
         }
 
         .splash-glow {
             position: absolute;
-            inset: 5%;
+            inset: 15%;
             border-radius: 50%;
-            box-shadow: 0 0 80px 40px rgba(212, 163, 115, 0.3);
+            box-shadow: 0 0 80px 40px rgba(212, 163, 115, 0.2);
             opacity: 0;
             animation: luxury-glow-pulse 3.5s ease-in-out 1.5s infinite alternate;
             z-index: 1;
@@ -244,7 +254,6 @@
             text-transform: uppercase;
         }
 
-        /* Elegant Progress Line */
         .splash-progress-container {
             position: absolute;
             bottom: 60px;
@@ -271,68 +280,21 @@
             will-change: transform;
         }
 
-        /* Cinematic Exit States */
-        #premium-splash.splash-exit {
-            opacity: 0;
-            visibility: hidden;
-        }
-        
-        #premium-splash.splash-exit .splash-content-wrapper {
-            transform: scale(1.1) translateY(-20px); 
-            filter: blur(15px);
-        }
-        
-        #premium-splash.splash-exit .splash-bg-img {
-            transform: scale(1.25); 
-            opacity: 0;
-            transition: transform 1.5s cubic-bezier(0.76, 0, 0.24, 1), opacity 1.5s ease;
-        }
+        #premium-splash.splash-exit { opacity: 0; visibility: hidden; }
+        #premium-splash.splash-exit .splash-content-wrapper { transform: scale(1.1) translateY(-20px); filter: blur(15px); }
+        #premium-splash.splash-exit .splash-bg-img { transform: scale(1.25); opacity: 0; transition: transform 1.5s cubic-bezier(0.76, 0, 0.24, 1), opacity 1.5s ease; }
 
-        /* GPU Animations */
-        @keyframes premium-bg-pan {
-            0% { transform: scale(1.15); }
-            100% { transform: scale(1.02); } 
-        }
+        @keyframes premium-bg-pan { 0% { transform: scale(1.15); } 100% { transform: scale(1.02); } }
+        @keyframes luxury-fade-up { 0% { opacity: 0; transform: scale(0.85) translateY(25px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+        @keyframes luxury-fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
+        @keyframes luxury-glow-pulse { 0% { opacity: 0.3; transform: scale(1); } 100% { opacity: 0.7; transform: scale(1.04); } }
+        @keyframes luxury-loading-slide { 0% { transform: translateX(-150%); } 100% { transform: translateX(350%); } }
 
-        @keyframes luxury-fade-up {
-            0% { opacity: 0; transform: scale(0.85) translateY(25px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        @keyframes luxury-fade-in {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        @keyframes luxury-glow-pulse {
-            0% { opacity: 0.3; transform: scale(1); }
-            100% { opacity: 0.7; transform: scale(1.04); }
-        }
-
-        @keyframes luxury-loading-slide {
-            0% { transform: translateX(-150%); }
-            100% { transform: translateX(350%); } 
-        }
-
-        /* Respect Reduced Motion */
         @media (prefers-reduced-motion: reduce) {
-            .splash-bg-img, .splash-brand-logo, .splash-title, .splash-subtitle, .splash-glow {
-                animation: none !important;
-                opacity: 1 !important;
-                transform: none !important;
-            }
-            .splash-progress-bar {
-                animation: none !important;
-                width: 100%;
-            }
-            #premium-splash.splash-exit .splash-content-wrapper,
-            #premium-splash.splash-exit .splash-bg-img {
-                transform: none !important;
-                filter: none !important;
-            }
-            #premium-splash {
-                transition: opacity 0.8s ease, visibility 0.8s ease;
-            }
+            .splash-bg-img, .splash-title, .splash-subtitle, .splash-glow { animation: none !important; opacity: 1 !important; transform: none !important; }
+            .splash-progress-bar { animation: none !important; width: 100%; }
+            #premium-splash.splash-exit .splash-content-wrapper, #premium-splash.splash-exit .splash-bg-img { transform: none !important; filter: none !important; }
+            #premium-splash { transition: opacity 0.8s ease, visibility 0.8s ease; }
         }
     </style>
 </head>
@@ -347,18 +309,21 @@
         }
     </script>
 
-    <!-- === 10/10 PREMIUM LUXURY SPLASH SCREEN === -->
+    <!-- === SPLASH SCREEN === -->
     <div id="premium-splash">
         <div class="splash-bg-wrapper">
-            <img src="./images/hero.webp" alt="Background" class="splash-bg-img" draggable="false">
+            <!-- حماية صورة الخلفية -->
+            <img src="./images/hero.webp" alt="Background" class="splash-bg-img anti-save-img" draggable="false" oncontextmenu="return false;">
             <div class="splash-overlay"></div>
         </div>
 
         <div class="splash-content-wrapper">
             <div class="splash-logo-container">
-                <img src="./images/splash-logo6.WEBP" onerror="this.src='https://i.postimg.cc/vDZ1S2X8/logo.jpg'" alt="Bunni Logo" class="splash-brand-logo" draggable="false">
-                <div class="splash-glow"></div>
+                <!-- تم إضافة مسار الصورة الشفافة الجديدة + حماية شاملة لمنع الحفظ -->
+                <img src="./images/splash-logo-final.png" onerror="this.src='https://i.postimg.cc/vDZ1S2X8/logo.jpg'" alt="Bunni Logo" class="splash-brand-logo anti-save-img" draggable="false" oncontextmenu="return false;">
             </div>
+            <div class="splash-glow"></div>
+            
             <h1 class="splash-title" dir="ltr">Bunni Cat & Coffee</h1>
             <p class="splash-subtitle" dir="ltr">First Cat Café in Babylon</p>
         </div>
@@ -575,7 +540,7 @@
             </div>
         </div>
 
-        <!-- زر الوضع الليلي العائم والثابت -->
+        <!-- زر الوضع الليلي -->
         <button onclick="toggleTheme()" class="fixed top-12 left-4 z-50 w-12 h-12 bg-white dark:bg-bunni-darkCard rounded-full shadow-lg border border-bunni-surface dark:border-bunni-darkBorder flex items-center justify-center transition-transform active:scale-90">
             <i id="themeIcon" class="fa-solid fa-moon text-xl text-bunni-espresso dark:text-bunni-gold"></i>
         </button>
@@ -584,9 +549,10 @@
         <header class="relative bg-bunni-surface dark:bg-bunni-darkSurface pt-10 pb-8 rounded-b-[40px] shadow-sm transition-colors">
             <div class="relative z-10 w-full max-w-2xl mx-auto px-6 text-center">
                 
-                <!-- --- التعديل الجذري للحاوية: إزالة الخلفية والحدود لتصبح شفافة 100% --- -->
-                <div class="w-36 h-36 mx-auto mb-6 relative rounded-full overflow-hidden flex items-center justify-center shadow-[0_10px_30px_rgba(0,0,0,0.15)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)] bg-transparent border-0">
-                    <img src="./images/splash-logo6.WEBP" onerror="this.src='https://i.postimg.cc/vDZ1S2X8/logo.jpg'" alt="Bunni Logo" class="w-full h-full object-cover scale-[1.02]" draggable="false">
+                <!-- حاوية لوغو الترويسة مع الحماية وتجهيزها للصورة الشفافة -->
+                <div class="w-36 h-36 mx-auto mb-6 relative z-10">
+                    <!-- الصورة هنا محمية بالكامل من الحفظ -->
+                    <img src="./images/splash-logo-final.png" onerror="this.src='https://i.postimg.cc/vDZ1S2X8/logo.jpg'" alt="Bunni Logo" class="w-full h-full object-contain anti-save-img drop-shadow-md" draggable="false" oncontextmenu="return false;">
                 </div>
                 
                 <h1 class="font-display text-4xl leading-tight font-bold text-bunni-espresso dark:text-white mb-2 drop-shadow-sm">بُنّي كافيه</h1>
@@ -603,7 +569,7 @@
             </div>
         </header>
 
-        <!-- شريط التصنيفات اللاصق -->
+        <!-- شريط التصنيفات -->
         <nav class="sticky top-0 z-40 glass-header mt-0 pt-4 pb-3 transition-colors">
             <div class="w-full max-w-4xl mx-auto overflow-hidden">
                 <ul id="categoryTabs" class="flex overflow-x-auto hide-scrollbar gap-3 px-4 items-center w-full">
@@ -627,7 +593,7 @@
             <div id="menuContainer" class="space-y-10 pb-6 px-4 w-full">
             </div>
             
-            <!-- قسم غرفة الدراسة الاحترافي -->
+            <!-- قسم غرفة الدراسة -->
             <section id="section-study_room" class="menu-category w-full px-4 mb-10">
                 <div class="flex items-center mb-5">
                     <h2 class="text-2xl font-display font-bold text-bunni-espresso dark:text-white tracking-tight">
@@ -826,8 +792,9 @@
                     }
                 });
                 
+                // تحديث اسم الصورة هنا أيضاً
                 const logoImg = new Image();
-                logoImg.src = './images/splash-logo6.WEBP';
+                logoImg.src = './images/splash-logo-final.png';
                 const logoLoadPromise = new Promise((resolve) => {
                     if (logoImg.complete) resolve();
                     else {
@@ -855,6 +822,14 @@
                     executeExitAnimation();
                 }, 8000);
             }
+            
+            // إضافة حماية لجميع صور المشروبات لمنع حفظها وسرقتها
+            const allImages = document.querySelectorAll('img');
+            allImages.forEach(img => {
+                img.addEventListener('contextmenu', e => e.preventDefault());
+                img.setAttribute('draggable', 'false');
+                img.classList.add('anti-save-img');
+            });
         });
 
         function toggleTheme() {
@@ -901,7 +876,7 @@
                                     <i class="fa-solid fa-star text-[8px] ml-1"></i> ننصح به
                                 </div>
                                 <div class="h-32 w-full rounded-2xl overflow-hidden mb-3 bg-bunni-surface dark:bg-bunni-darkSurface pointer-events-none select-none">
-                                    <img src="${itemImg}" alt="" loading="lazy" class="w-full h-full object-cover" draggable="false" onerror="this.src='https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=600&q=80'">
+                                    <img src="${itemImg}" alt="" loading="lazy" class="w-full h-full object-cover anti-save-img" draggable="false" onerror="this.src='https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=600&q=80'">
                                 </div>
                                 <h3 class="font-display font-bold text-bunni-espresso dark:text-white text-base line-clamp-1">${item.name}</h3>
                                 <div class="flex items-center justify-between mt-2">
@@ -1025,7 +1000,7 @@
                             </div>
                             
                             <div class="w-24 h-24 shrink-0 rounded-[16px] overflow-hidden bg-bunni-surface dark:bg-bunni-darkSurface relative shadow-inner pointer-events-none select-none">
-                                <img src="${itemImg}" alt="" loading="lazy" class="w-full h-full object-cover" draggable="false" onerror="this.src='https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=600&q=80'">
+                                <img src="${itemImg}" alt="" loading="lazy" class="w-full h-full object-cover anti-save-img" draggable="false" onerror="this.src='https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=600&q=80'">
                                 <div class="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent"></div>
                             </div>
                         </div>
@@ -1091,6 +1066,12 @@
                 renderMenu(menuData);
                 if(bestsellersSection) bestsellersSection.style.display = 'block';
                 if(studyRoomSection) studyRoomSection.style.display = 'block';
+                // تفعيل الحماية لصور نتائج البحث
+                setTimeout(() => {
+                    document.querySelectorAll('img.anti-save-img').forEach(img => {
+                        img.addEventListener('contextmenu', e => e.preventDefault());
+                    });
+                }, 100);
                 return;
             }
             
@@ -1106,6 +1087,13 @@
             }).filter(cat => cat !== null);
 
             renderMenu(filteredData);
+            
+            // تفعيل الحماية لصور نتائج البحث
+            setTimeout(() => {
+                document.querySelectorAll('img.anti-save-img').forEach(img => {
+                    img.addEventListener('contextmenu', e => e.preventDefault());
+                });
+            }, 100);
         }
 
         function setupScrollSpy() {
@@ -1151,6 +1139,7 @@
 
 
 ```
+
 
 
 
